@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	// "log"
-	// "strconv"
-
 	"context"
 	"database/sql"
 	"encoding/json"
@@ -11,7 +8,6 @@ import (
 	"fmt"
 	"goapi/models"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -20,68 +16,23 @@ import (
 func GetPayment(c *gin.Context) {
 	var payment []models.Payment
 	_, err := dbmap.Select(&payment, "USE [Interoperabilidad] SELECT * FROM NotificationMOLPayment")
-
 	if err == nil {
 		c.JSON(200, payment)
 	} else {
 		c.JSON(404, gin.H{"error": "payment not found"})
 	}
-
 }
-
-func Healthcheck(c *gin.Context) {
-
-	errDbFacthos := infra.CheckDB("FACTHOS")
-	errDbJDE := infra.CheckDB("JDE")
-
-	var sDbFacthos, sDbJDE string
-
-	if errDbFacthos != nil {
-		sDbFacthos = errDbFacthos.Error()
-	} else {
-		sDbFacthos = "OK"
-	}
-
-	if errDbJDE != nil {
-		sDbJDE = errDbJDE.Error()
-	} else {
-		sDbJDE = "OK"
-	}
-
-	if errDbFacthos != nil || errDbJDE != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"FACTHOS": sDbFacthos,
-			"JDE":     sDbJDE,
-			"time":    time.Now(),
-		})
-
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"FACTHOS": sDbFacthos,
-			"JDE":     sDbJDE,
-			"time":    time.Now(),
-		})
-	}
-	return
-
-}
-
-
 
 func PostPayment(c *gin.Context) {
-
 	w := c.Writer
 	r := c.Request
-
 	headerContentType := r.Header.Get("Content-Type")
 	if headerContentType != "application/json" {
 		errorResponse(w, "Content type is not application/json", http.StatusUnsupportedMediaType)
 		return
 	}
-
 	var newPayment models.Payment
 	var unmarshalErr *json.UnmarshalTypeError
-
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
 	err := decoder.Decode(&newPayment)
@@ -93,7 +44,6 @@ func PostPayment(c *gin.Context) {
 		}
 		return
 	}
-
 	ctx := context.Background()
 	DBConection := initDb()
 	tsql := fmt.Sprintf("USE [Interoperabilidad] INSERT INTO [dbo].[NotificationMOLPayment]([Key],[External_Reference],[Status],[Amount]) VALUES (@Key, @External_reference, @Status, @Amount);")

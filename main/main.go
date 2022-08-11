@@ -6,19 +6,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/istefanini/goapi/infra"
 	"github.com/istefanini/goapi/routes"
 	cors "github.com/itsjamie/gin-cors"
 )
 
 func main() {
-
 	infra.DbPayment, _ = infra.ConnectDB()
 	defer infra.DbPayment.Close()
-
-	mappings.CreateUrlMappings()
-	// Listen and server on 0.0.0.0:8080
-	mappings.Router.Run(":8080")
-
+	////CHECK CONNEXION DB
+	err := infra.CheckDB()
+	infra.FailOnError(err, "Failed to connect to SQLServer")
 	go func() {
 		//GIN FRAMEWORK
 		r := gin.Default()
@@ -33,8 +31,7 @@ func main() {
 		}
 		r.Use(cors.Middleware(config))
 		routes.CreateRoutes(r)
-		serverPort := os.Getenv("API_SERVER_PORT")
+		serverPort := os.Getenv("API_PORT")
 		_ = r.Run(":" + serverPort)
 	}()
-
 }
