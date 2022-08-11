@@ -3,26 +3,31 @@ package infra
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
-	"os"
 
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
 var (
 	DbPayment *sql.DB
+	SqlConf   *DBData
 )
 
-func ConnectDB() *sql.DB {
-	Driver := os.Getenv("DB_DRIVER")
-	Username := os.Getenv("DB_USERNAME")
-	Password := os.Getenv("DB_PASSWORD")
-	Host := os.Getenv("DB_HOST")
-	Instance := os.Getenv("DB_INSTANCE")
-	Database := os.Getenv("DB_DATABASE")
-	Encrypt := os.Getenv("DB_ENCRYPT")
+type DBData struct {
+	DB_DRIVER   string
+	DB_USER     string
+	DB_PASSWORD string
+	DB_HOST     string
+	DB_INSTANCE string
+	DB_DATABASE string
+	DB_ENCRYPT  string
+}
 
-	conection, err := sql.Open(Driver, Driver+"://"+Username+":"+Password+"@"+Host+"/"+Instance+"?"+"database="+Database+"&"+"encrypt="+Encrypt+"")
+func ConnectDB() *sql.DB {
+	fmt.Println(SqlConf.DB_DRIVER + "://" + SqlConf.DB_USER + ":" + SqlConf.DB_PASSWORD + "@" + SqlConf.DB_HOST + "/" + SqlConf.DB_INSTANCE + "?" + "database=" + SqlConf.DB_DATABASE + "&" + "encrypt=" + SqlConf.DB_ENCRYPT + "")
+
+	conection, err := sql.Open(SqlConf.DB_DRIVER, SqlConf.DB_DRIVER+"://"+SqlConf.DB_USER+":"+SqlConf.DB_PASSWORD+"@"+SqlConf.DB_HOST+"/"+SqlConf.DB_INSTANCE+"?"+"database="+SqlConf.DB_DATABASE+"&"+"encrypt="+SqlConf.DB_ENCRYPT+"")
 	if err != nil {
 		panic(err.Error())
 	}
