@@ -4,6 +4,7 @@ import (
 	"goapi/controllers"
 
 	"github.com/gin-gonic/gin"
+	"github.com/istefanini/goapi/middleware"
 )
 
 func CreateRoutes(r *gin.Engine) {
@@ -12,6 +13,6 @@ func CreateRoutes(r *gin.Engine) {
 	v1.Use()
 	{
 		v1.GET("/healthcheck", controllers.Healthcheck)
-		v1.POST("/notificaction-mol-payment", controllers.PostPayment)
+		v1.POST("/notificaction-mol-payment", middleware.TokenAuthMiddleware(), controllers.PostPayment)
 	}
 }

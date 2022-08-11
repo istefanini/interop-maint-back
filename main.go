@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/istefanini/goapi/infra"
-	"github.com/istefanini/goapi/middleware"
 	"github.com/istefanini/goapi/routes"
 	"github.com/subosito/gotenv"
 )
@@ -16,7 +15,6 @@ func init() {
 }
 
 func main() {
-
 	// setup database
 	infra.SqlConf = &infra.DBData{
 		DB_DRIVER:   os.Getenv("DB_DRIVER"),
@@ -31,19 +29,7 @@ func main() {
 	defer infra.DbPayment.Close()
 
 	gin.SetMode(gin.ReleaseMode)
-	//GIN FRAMEWORK
 	r := gin.Default()
-	//Set up CORS middleware options
-	// config := cors.Config{
-	// 	Origins:         "*",
-	// 	RequestHeaders:  "Origin, Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization",
-	// 	Methods:         "POST, GET, OPTIONS, PUT, DELETE",
-	// 	Credentials:     false,
-	// 	ValidateHeaders: false,
-	// 	MaxAge:          1 * time.Minute,
-	// }
-
-	r.Use(middleware.TokenAuthMiddleware())
 	routes.CreateRoutes(r)
 	serverPort := os.Getenv("API_PORT")
 	_ = r.Run(":" + serverPort)
