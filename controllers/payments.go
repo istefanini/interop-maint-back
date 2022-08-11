@@ -11,17 +11,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/istefanini/goapi/infra"
 )
-
-func GetPayment(c *gin.Context) {
-	var payment []models.Payment
-	_, err := dbmap.Select(&payment, "USE [Interoperabilidad] SELECT * FROM NotificationMOLPayment")
-	if err == nil {
-		c.JSON(200, payment)
-	} else {
-		c.JSON(404, gin.H{"error": "payment not found"})
-	}
-}
 
 func PostPayment(c *gin.Context) {
 	w := c.Writer
@@ -45,7 +36,7 @@ func PostPayment(c *gin.Context) {
 		return
 	}
 	ctx := context.Background()
-	DBConection := initDb()
+	DBConection := infra.DbPayment
 	tsql := fmt.Sprintf("USE [Interoperabilidad] INSERT INTO [dbo].[NotificationMOLPayment]([Key],[External_Reference],[Status],[Amount]) VALUES (@Key, @External_reference, @Status, @Amount);")
 	result, err2 := DBConection.ExecContext(
 		ctx,
