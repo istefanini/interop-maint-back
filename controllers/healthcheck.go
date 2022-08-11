@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/istefanini/restapi-gin/infra"
+	"github.com/istefanini/goapi/infra"
 )
 
 func Healthcheck(c *gin.Context) {

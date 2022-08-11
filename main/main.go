@@ -1,13 +1,12 @@
 package main
 
 import (
-	"goapi/mappings"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/istefanini/restapi-gin/routes"
+	"github.com/istefanini/goapi/routes"
 	cors "github.com/itsjamie/gin-cors"
 )
 
