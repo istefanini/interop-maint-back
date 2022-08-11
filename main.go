@@ -44,7 +44,7 @@ func main() {
 		MaxAge:          1 * time.Minute,
 	}
 
-	r.Use(cors.Middleware(config))
+	r.Use(middleware.requestIDHandler)
 	routes.CreateRoutes(r)
 	serverPort := os.Getenv("API_PORT")
 	_ = r.Run(":" + serverPort)
