@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/denisenkom/go-mssqldb"
 )
@@ -12,15 +13,20 @@ var (
 	DbPayment *sql.DB
 )
 
-func ConnectDB() (*sql.DB, error) {
-	// Driver := os.Getenv("DB_DRIVER")
-	// Username := os.Getenv("DB_USERNAME")
-	// Password := os.Getenv("DB_PASSWORD")
-	// Host := os.Getenv("DB_HOST")
-	// Instance := os.Getenv("DB_INSTANCE")
-	// Database := os.Getenv("DB_DATABASE")
-	// Encrypt := os.Getenv("DB_ENCRYPT")
-	return sql.Open("sqlserver", "sqlserver://serviceweb:Condor551@172.16.1.144/dv?database=Interoperabilidad&encrypt=disable")
+func ConnectDB() *sql.DB {
+	Driver := os.Getenv("DB_DRIVER")
+	Username := os.Getenv("DB_USERNAME")
+	Password := os.Getenv("DB_PASSWORD")
+	Host := os.Getenv("DB_HOST")
+	Instance := os.Getenv("DB_INSTANCE")
+	Database := os.Getenv("DB_DATABASE")
+	Encrypt := os.Getenv("DB_ENCRYPT")
+
+	conection, err := sql.Open(Driver, Driver+"://"+Username+":"+Password+"@"+Host+"/"+Instance+"?"+"database="+Database+"&"+"encrypt="+Encrypt+"")
+	if err != nil {
+		panic(err.Error())
+	}
+	return conection
 }
 
 func CheckDB() error {

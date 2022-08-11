@@ -17,7 +17,7 @@ func init() {
 }
 
 func main() {
-	infra.DbPayment, _ = infra.ConnectDB()
+	infra.DbPayment = infra.ConnectDB()
 	defer infra.DbPayment.Close()
 
 	gin.SetMode(gin.ReleaseMode)
