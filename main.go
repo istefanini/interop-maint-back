@@ -28,7 +28,6 @@ func main() {
 		DB_DATABASE: os.Getenv("DB_DATABASE"),
 		DB_ENCRYPT:  os.Getenv("DB_ENCRYPT"),
 	}
-
 	infra.DbPayment = infra.ConnectDB()
 	defer infra.DbPayment.Close()
 
