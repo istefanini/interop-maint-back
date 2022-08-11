@@ -3,7 +3,6 @@ package infra
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 
 	_ "github.com/denisenkom/go-mssqldb"
@@ -25,9 +24,6 @@ type DBData struct {
 }
 
 func ConnectDB() *sql.DB {
-	fmt.Println(SqlConf.DB_DRIVER + "://" + SqlConf.DB_USER + ":" + SqlConf.DB_PASSWORD + "@" + SqlConf.DB_HOST + "/" + SqlConf.DB_INSTANCE + "?" + "database=" + SqlConf.DB_DATABASE + "&" + "encrypt=" + SqlConf.DB_ENCRYPT + "")
-
-	// conection, err := sql.Open("sqlserver", "sqlserver://serviceweb:Condor551@172.16.1.144/dv?database=Interoperabilidad&encrypt=disable")
 	conection, err := sql.Open(SqlConf.DB_DRIVER, SqlConf.DB_DRIVER+"://"+SqlConf.DB_USER+":"+SqlConf.DB_PASSWORD+"@"+SqlConf.DB_HOST+"/"+SqlConf.DB_INSTANCE+"?"+"database="+SqlConf.DB_DATABASE+"&"+"encrypt="+SqlConf.DB_ENCRYPT+"")
 	if err != nil {
 		panic(err.Error())
