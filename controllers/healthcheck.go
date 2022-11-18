@@ -18,13 +18,13 @@ func Healthcheck(c *gin.Context) {
 	}
 	if errDbPayment != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"DBPAYMENTS": sDbPayment,
-			"time":       time.Now(),
+			"INTEROPERABILIDAD": sDbPayment,
+			"time":              time.Now(),
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
-			"DBPAYMENTS": sDbPayment,
-			"time":       time.Now(),
+			"INTEROPERABILIDAD": sDbPayment,
+			"time":              time.Now(),
 		})
 	}
 	return
